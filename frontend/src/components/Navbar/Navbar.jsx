@@ -65,7 +65,7 @@ const Navbar = () => {
             </Link>
           </div>
           <button
-            className="md:hidden text-white text-2xl hover:text-zinc-300"
+            className="block md:hidden text-white text-2xl hover:text-zinc-300"
             onClick={HandleMobileNav}
           >
             <GiHamburgerMenu />

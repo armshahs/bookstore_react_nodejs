@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
   const links = [
@@ -22,6 +23,14 @@ const Navbar = () => {
     },
   ];
 
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  console.log(isLoggedIn);
+
+  if (isLoggedIn === false) {
+    // This will cut 2 items from the dict after 2 places .ie. skipping 0 and 1, so 2 & 3 will be removed.
+    links.splice(2, 2);
+  }
+
   const [MobileNav, setMobileNav] = useState("hidden");
   const HandleMobileNav = () => {
     MobileNav === "hidden" ? setMobileNav("block") : setMobileNav("hidden");
@@ -41,29 +50,43 @@ const Navbar = () => {
         <div className="nav-links-bookzone block md:flex items-center gap-4">
           <div className="hidden md:flex gap-4">
             {links.map((items, i) => (
-              <Link
-                to={items.link}
-                className="hover:text-blue-500 transition-all duration-300"
-                key={i}
-              >
-                {items.title}
-              </Link>
+              <div className="flex items-center">
+                {items.title === "Profile" ? (
+                  <Link
+                    to={items.link}
+                    className="px-2 py-1 border border-blue-500 rounded hover:bg-white hover:text-zinc-800 transition-all duration-300"
+                    key={i}
+                  >
+                    {items.title}
+                  </Link>
+                ) : (
+                  <Link
+                    to={items.link}
+                    className="hover:text-blue-500 transition-all duration-300"
+                    key={i}
+                  >
+                    {items.title}
+                  </Link>
+                )}
+              </div>
             ))}
           </div>
-          <div className="hidden md:flex gap-4">
-            <Link
-              to="/Login"
-              className="px-2 py-1 border border-blue-500 rounded hover:bg-white hover:text-zinc-800 transition-all duration-300"
-            >
-              Login
-            </Link>
-            <Link
-              to="/signup"
-              className="px-2 py-1 bg-blue-500 rounded  hover:bg-white hover:text-zinc-800 transition-all duration-300"
-            >
-              Signup
-            </Link>
-          </div>
+          {isLoggedIn === false && (
+            <div className="hidden md:flex gap-4">
+              <Link
+                to="/Login"
+                className="px-2 py-1 border border-blue-500 rounded hover:bg-white hover:text-zinc-800 transition-all duration-300"
+              >
+                Login
+              </Link>
+              <Link
+                to="/signup"
+                className="px-2 py-1 bg-blue-500 rounded  hover:bg-white hover:text-zinc-800 transition-all duration-300"
+              >
+                Signup
+              </Link>
+            </div>
+          )}
           <button
             className="block md:hidden text-white text-2xl hover:text-zinc-300"
             onClick={HandleMobileNav}
@@ -87,20 +110,24 @@ const Navbar = () => {
             {items.title}
           </Link>
         ))}
-        <Link
-          to="/Login"
-          onClick={HandleMobileNav}
-          className={`${MobileNav} px-8 py-4 border text-4xl text-white mb-8 font-semibold border-blue-500 rounded hover:bg-white hover:text-zinc-800 transition-all duration-300`}
-        >
-          Login
-        </Link>
-        <Link
-          to="/signup"
-          onClick={HandleMobileNav}
-          className={` ${MobileNav} px-8 py-4 text-4xl mb-8 text-white font-semibold bg-blue-500 rounded  hover:bg-white hover:text-zinc-800 transition-all duration-300`}
-        >
-          Signup
-        </Link>
+        {isLoggedIn === false && (
+          <>
+            <Link
+              to="/Login"
+              onClick={HandleMobileNav}
+              className={`${MobileNav} px-8 py-4 border text-4xl text-white mb-8 font-semibold border-blue-500 rounded hover:bg-white hover:text-zinc-800 transition-all duration-300`}
+            >
+              Login
+            </Link>
+            <Link
+              to="/signup"
+              onClick={HandleMobileNav}
+              className={` ${MobileNav} px-8 py-4 text-4xl mb-8 text-white font-semibold bg-blue-500 rounded  hover:bg-white hover:text-zinc-800 transition-all duration-300`}
+            >
+              Signup
+            </Link>
+          </>
+        )}
       </div>
     </>
   );

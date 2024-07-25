@@ -67,7 +67,7 @@ const Signup = () => {
           <p className="flex mt-4 items-center justify-center text-zinc-600 font-semibold ">
             Already have an account ?&nbsp;&nbsp;{" "}
             <Link
-              to=""
+              to="/login"
               className="text - text-zinc-500 hover:text-zinc-400 underline"
             >
               {" "}
